@@ -20,9 +20,13 @@ fn main() {
         .build_target("icicle")
         .build();
 
-    println!("cargo:rustc-link-search={}/build", out_dir.display());
+    if cfg!(target_os = "windows") {
+        println!("cargo:rustc-link-search={}/build/Release", out_dir.display());
+    } else {
+        println!("cargo:rustc-link-lib=stdc++");
+        println!("cargo:rustc-link-search={}/build", out_dir.display());
+    }
 
     println!("cargo:rustc-link-lib=ingo_bls12_381");
-    println!("cargo:rustc-link-lib=stdc++");
     println!("cargo:rustc-link-lib=cudart");
 }
